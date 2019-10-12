@@ -4,7 +4,7 @@ import { NavController, ToastController } from '@ionic/angular';
 import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner/ngx';
 import { Router } from '@angular/router';
 import { HttpClientService } from '../http-client.service';
- 
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.page.html',
@@ -29,8 +29,8 @@ export class DashboardPage implements OnInit {
     public httpClientService: HttpClientService,
     ) { }
 
-  async getUserByCode(userCodeInput: Number) {
-    
+  async getUserByCode(userCodeInput: number) {
+
     this.userData = await this.httpClientService.getUserData(userCodeInput);
     this.uid = this.userData.uid;
     this.createdAt = this.userData.createdAt;
@@ -45,10 +45,10 @@ export class DashboardPage implements OnInit {
       });
     }
   }
-  
+
   async logout() {
     await this.afAuth.auth.signOut();
-    await this.navCtrl.navigateForward("/login");
+    await this.navCtrl.navigateForward('/login');
     await this.logOutToast();
   }
 

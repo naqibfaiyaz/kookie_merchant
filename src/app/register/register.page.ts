@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { NavController, ToastController } from "@ionic/angular";
+import { NavController, ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-register',
@@ -15,21 +15,21 @@ export class RegisterPage implements OnInit {
     public toastController: ToastController,
     ) {}
 
-  user = { email: '', password: '' }
-  message = {}  
+  user = { email: '', password: '' };
+  message = {};
 
   async createAccount() {
-    try { 
+    try {
       const createUser = await this.afAuth.auth.createUserWithEmailAndPassword(
         this.user.email, this.user.password
-      ); 
-      await this.navCtrl.navigateForward("/dashboard");
-      this.message = 'Your account has been created successfully.'
+      );
+      await this.navCtrl.navigateForward('/dashboard');
+      this.message = 'Your account has been created successfully.';
       await this.presentToast(this.message);
     } catch (message) {
       await this.presentToast(message);
     }
-  } 
+  }
 
   async presentToast(error) {
     const toast = await this.toastController.create({
@@ -40,7 +40,7 @@ export class RegisterPage implements OnInit {
   }
 
   ngOnInit() {
-    
+
   }
 
 }

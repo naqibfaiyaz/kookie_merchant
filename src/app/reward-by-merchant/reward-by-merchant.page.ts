@@ -10,11 +10,11 @@ import { NavController, ToastController } from '@ionic/angular';
   styleUrls: ['./reward-by-merchant.page.scss'],
 })
 export class RewardByMerchantPage implements OnInit {
- 
+
   userUid = this.route.snapshot.queryParamMap.get('uid');
   customerId = this.route.snapshot.queryParamMap.get('customerId');
   createdAt = this.route.snapshot.queryParamMap.get('createdAt');
- 
+
   merchantUid = this.afAuth.auth.currentUser.uid;
   // merchantUid = 'clw8Q9TWtJeRBVz4WigFFBhpxwM2';
 
@@ -70,14 +70,14 @@ export class RewardByMerchantPage implements OnInit {
 
     this.rewardResponse = await this.httpClientService.postRewardToUser(this.userUid, this.merchantUid, this.rewardValue);
     this.showErrorAndNavigate(this.rewardResponse);
-    
+
   }
 
   async pointRewardToUser(rewardPointValue: number) {
 
     this.rewardResponse = await this.httpClientService.postRewardToUser(this.userUid, this.merchantUid, rewardPointValue);
     this.showErrorAndNavigate(this.rewardResponse);
-    
+
   }
 
   async showErrorAndNavigate(rewardResponse: any) {

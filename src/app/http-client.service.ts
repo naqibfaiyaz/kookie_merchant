@@ -44,9 +44,7 @@ export class HttpClientService {
       },
       { headers: this.header }
       ).toPromise();
-
     return this.reward;
   }
-
 
 }
