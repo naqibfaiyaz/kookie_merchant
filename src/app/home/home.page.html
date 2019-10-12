@@ -1,0 +1,48 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>
+            Login Page
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <!-- <firebase-ui></firebase-ui>
+
+    <h1 *ngIf="afAuth.auth.currentUser"> Welcome {{ afAuth.auth.currentUser.displayName }} </h1>
+
+    <section>
+        <ion-button *ngIf="afAuth.auth.currentUser" (click)="logout()">Sign Out</ion-button>
+    </section> -->
+
+    <!-- <form [formGroup]="registerForm">
+        <div class="form-group">
+            <label>Email address</label>
+            <input type="email" formControlName="email" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" class="form-control" formControlName="password" required>
+            <label class="error">{{errorMessage}}</label>
+            <label class="success">{{successMessage}}</label>
+        </div>
+        <button type="submit" (click)="tryRegister(registerForm.value)" class="btn btn-default">Register</button>
+    </form> -->
+
+
+    <form (ngSubmit)="registerForm()">
+        <ion-item>
+            <ion-label></ion-label>
+            <ion-input type="text" [(ngModel)]="todo.email" placeholder="email" name="email"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label></ion-label>
+            <ion-textarea [(ngModel)]="todo.password" placeholder="password" name="password"></ion-textarea>
+        </ion-item>
+        <button ion-button type="submit" block>Add Todo</button>
+    </form>
+
+
+
+</ion-content>

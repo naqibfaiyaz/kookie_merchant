@@ -1,0 +1,7 @@
+{
+  "name": "kookie_merchant",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

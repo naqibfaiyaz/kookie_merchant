@@ -1,0 +1,37 @@
+ion-button {
+    margin-left: 15px;
+}
+
+ion-icon {
+    margin-left: 12px;
+}
+
+ion-input{
+    border: solid 1px darkgrey ;   
+    border-radius: 5px;
+    width: 80px;
+    text-align: center;
+    float: inherit;
+}
+
+.qr-code {
+    // border: 2px solid red;
+    color: coral;
+}
+
+.confirm-button {
+    background-color: #ED7014;
+    border: none;
+    color: white;    
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 20px;
+    padding-left: 26px;
+    padding-right: 26px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 14px;
+    margin-top: 16px;
+    margin-left: 10px;
+}

@@ -1,0 +1,30 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Kookie Merchant</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-card>
+        <ion-card-header>
+            <ion-card-title>Create New Account</ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+            <form (ngSubmit)="createAccount()">
+                <ion-item>
+                    <ion-label></ion-label>
+                    <ion-icon name="mail"></ion-icon>
+                    <ion-input type="text" [(ngModel)]="user.email" placeholder="E-mail" name="email"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label></ion-label>
+                    <ion-icon name="key"></ion-icon>
+                    <ion-input type="password" [(ngModel)]="user.password" placeholder="Password" name="password"></ion-input>
+                </ion-item><br/>
+                <ion-button type="submit">Register</ion-button>
+            </form><br/>
+            <div>Already have a account? <a href="/login" class="">Login</a> here</div>
+        </ion-card-content>
+    </ion-card>
+</ion-content>

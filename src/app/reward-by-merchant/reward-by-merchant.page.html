@@ -1,0 +1,75 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Reward</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-content>  
+      <ion-grid>
+        <ion-row>
+          <ion-col size="8">
+            <div>Customer ID</div>
+            <div> {{ customerId }}</div>
+            <div>Enrolled Since</div>
+            <div> {{ createdAt  }}</div>
+          </ion-col>
+          <ion-col size="4" class="qr-code">
+            <ngx-qrcode [qrc-element-type]="elementType" [qrc-value] = "value">
+              </ngx-qrcode>
+          </ion-col>
+        </ion-row>
+      </ion-grid>   
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="star">
+    <ion-card-content>
+      <div class="ion-text-center">
+        <p>What amount of reward you want to give?</p> 
+        <ion-icon [name]="selectedOneStar ? 'star':'radio-button-off'" size="large" (click)="toggleOneStar()"></ion-icon>
+        <ion-icon [name]="selectedTwoStar ? 'star':'radio-button-off'" size="large" (click)="toggleTwoStar()"></ion-icon>
+        <ion-icon [name]="selectedThreeStar ? 'star':'radio-button-off'" size="large" (click)="toggleThreeStar()"></ion-icon>
+        <ion-icon [name]="selectedFourStar ? 'star':'radio-button-off'" size="large" (click)="toggleFourStar()"></ion-icon>
+        <ion-icon [name]="selectedFiveStar ? 'star':'radio-button-off'" size="large" (click)="toggleFiveStar()"></ion-icon>
+      </div>
+      <div class="ion-text-center">
+        <p>What did the customer ordered?</p>
+
+        <ion-button *ngFor="let offers of merchantOfferings" [color]="drinkSelected ? 'secondary' :'light'" size="small" (click)="toggleOrder(offers)">{{ offers }}</ion-button>
+
+        <button class="confirm-button ion-text-center" (click)="starRewardToUser()">Confirm</button>
+      </div>     
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="points">
+    <ion-card-content>
+      <ion-grid fixed>
+        <ion-row>
+          <ion-col size="6">
+              What amount of points you want to give?
+          </ion-col>
+          <ion-col size="2" offset="1">
+              <ion-input #rewardPoint  type="number" ></ion-input>
+          </ion-col>
+        </ion-row>
+      </ion-grid>     
+      <div>
+        <p style="padding-left:10px;">What did the customer ordered?</p>
+        
+        <ion-button [color]="drinkSelected ? 'secondary' :'light'" size="small" (click)="toggleOrder('drink')">Drink</ion-button>
+        <ion-button [color]="foodSelected ? 'secondary' :'light'" size="small"  (click)="toggleOrder('food')">Food</ion-button>
+        <ion-button [color]="coffeeSelected ? 'secondary' :'light'" size="small" (click)="toggleOrder('coffee')">Coffee</ion-button>
+      
+        <button class="confirm-button" (click)="pointRewardToUser(rewardPoint.value)">Confirm</button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>  
+          
+          
+
+
