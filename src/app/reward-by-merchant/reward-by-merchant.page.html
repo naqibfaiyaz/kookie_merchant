@@ -1,74 +1,99 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Reward</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/dashboard"></ion-back-button>
+        </ion-buttons>
+        <ion-title>Reward Point</ion-title>
+    </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-card>
-    <ion-card-content>  
-      <ion-grid>
-        <ion-row>
-          <ion-col size="8">
-            <div>Customer ID</div>
-            <div> {{ customerId }}</div>
-            <div>Enrolled Since</div>
-            <div> {{ createdAt  }}</div>
-          </ion-col>
-          <ion-col size="4" class="qr-code">
-            <ngx-qrcode [qrc-element-type]="elementType" [qrc-value] = "value"></ngx-qrcode>
-          </ion-col>
-        </ion-row>
-      </ion-grid>   
-    </ion-card-content>
-  </ion-card>
+<ion-content *ngIf="showContent">
+    <ion-card>
+        <ion-card-content style="background-color: #ffffff">
+            <ion-grid>
+                <ion-row>
+                    <ion-col size="8">
+                        <div>Customer ID:</div>
+                        <div class="customer-id"> {{ customerId }}</div>
+                        <div style="margin-top: 8px;">Enrolled Since:</div>
+                        <div class="enroll-date"> {{ createdAt }}</div>
+                    </ion-col>
+                    <ion-col size="4">
+                        <div>
+                            <ngx-qrcode class="qr-code" [qrc-element-type]="'img'" [qrc-value]="value" qrc-class="test-class"></ngx-qrcode>
+                        </div>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-card-content>
+    </ion-card>
 
-  <ion-card *ngIf="star">
-    <ion-card-content>
-      <div class="ion-text-center">
-        <p>What amount of reward you want to give?</p> 
-        <ion-icon [name]="selectedOneStar ? 'star':'radio-button-off'" size="large" (click)="toggleOneStar()"></ion-icon>
-        <ion-icon [name]="selectedTwoStar ? 'star':'radio-button-off'" size="large" (click)="toggleTwoStar()"></ion-icon>
-        <ion-icon [name]="selectedThreeStar ? 'star':'radio-button-off'" size="large" (click)="toggleThreeStar()"></ion-icon>
-        <ion-icon [name]="selectedFourStar ? 'star':'radio-button-off'" size="large" (click)="toggleFourStar()"></ion-icon>
-        <ion-icon [name]="selectedFiveStar ? 'star':'radio-button-off'" size="large" (click)="toggleFiveStar()"></ion-icon>
-      </div>
-      <div class="ion-text-center">
-        <p>What did the customer ordered?</p>
+    <ion-card *ngIf="star">
+        <ion-card-content>
+            <div style="margin-bottom:14px;">
+                <p>What amount of reward you want to give?</p>
+                <ion-icon [name]="selectedOneStar ? 'star':'radio-button-off'" size="large" (click)="toggleOneStar()"></ion-icon>
+                <ion-icon [name]="selectedTwoStar ? 'star':'radio-button-off'" size="large" (click)="toggleTwoStar()"></ion-icon>
+                <ion-icon [name]="selectedThreeStar ? 'star':'radio-button-off'" size="large" (click)="toggleThreeStar()"></ion-icon>
+                <ion-icon [name]="selectedFourStar ? 'star':'radio-button-off'" size="large" (click)="toggleFourStar()"></ion-icon>
+                <ion-icon [name]="selectedFiveStar ? 'star':'radio-button-off'" size="large" (click)="toggleFiveStar()"></ion-icon>
+            </div>
+            <div style="margin-bottom:12px;">
+                <p>What did the customer ordered?</p>
 
-        <ion-button *ngFor="let offers of merchantOfferings" [color]="drinkSelected ? 'secondary' :'light'" size="small" (click)="toggleOrder(offers)">{{ offers }}</ion-button>
+                <ion-button *ngIf="merchantOfferings[0]" [color]="firstOfferSelected ? 'kookie' :'light'" size="small" (click)="toggleOrder(merchantOfferings[0], 0)">{{ merchantOfferings[0] }}</ion-button>
 
-        <button class="confirm-button ion-text-center" (click)="starRewardToUser()">Confirm</button>
-      </div>     
-    </ion-card-content>
-  </ion-card>
+                <ion-button *ngIf="merchantOfferings[1]" [color]="secondOfferSelected ? 'kookie' :'light'" size="small" (click)="toggleOrder(merchantOfferings[1], 1)">{{ merchantOfferings[1] }}</ion-button>
 
-  <ion-card *ngIf="points">
-    <ion-card-content>
-      <ion-grid fixed>
-        <ion-row>
-          <ion-col size="6">
-              What amount of points you want to give?
-          </ion-col>
-          <ion-col size="2" offset="1">
-              <ion-input #rewardPoint  type="number" ></ion-input>
-          </ion-col>
-        </ion-row>
-      </ion-grid>     
-      <div>
-        <p style="padding-left:10px;">What did the customer ordered?</p>
-        
-        <ion-button [color]="drinkSelected ? 'secondary' :'light'" size="small" (click)="toggleOrder('drink')">Drink</ion-button>
-        <ion-button [color]="foodSelected ? 'secondary' :'light'" size="small"  (click)="toggleOrder('food')">Food</ion-button>
-        <ion-button [color]="coffeeSelected ? 'secondary' :'light'" size="small" (click)="toggleOrder('coffee')">Coffee</ion-button>
-      
-        <button class="confirm-button" (click)="pointRewardToUser(rewardPoint.value)">Confirm</button>
-      </div>
-    </ion-card-content>
-  </ion-card>
+                <ion-button *ngIf="merchantOfferings[2]" [color]="thirdOfferSelected ? 'kookie' :'light'" size="small" (click)="toggleOrder(merchantOfferings[2], 2)">{{ merchantOfferings[2] }}</ion-button>
 
-</ion-content>  
-          
-          
+                <ion-button *ngIf="merchantOfferings[3]" [color]="forthOfferSelected ? 'kookie' :'light'" size="small" (click)="toggleOrder(merchantOfferings[3], 3)">{{ merchantOfferings[3] }}</ion-button>
 
+                <ion-button *ngIf="merchantOfferings[4]" [color]="fifthOfferSelected ? 'kookie' :'light'" size="small" (click)="toggleOrder(merchantOfferings[4], 4)">{{ merchantOfferings[4] }}</ion-button>
 
+                <ion-button *ngIf="merchantOfferings[5]" [color]="fifthOfferSelected ? 'kookie' :'light'" size="small" (click)="toggleOrder(merchantOfferings[5], 5)">{{ merchantOfferings[5] }}</ion-button>
+            </div>
+
+            <div class="ion-text-center">
+                <button class="confirm-button" (click)="starRewardToUser()">Confirm</button>
+            </div>
+
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngIf="points">
+        <ion-card-content>
+            <ion-grid>
+                <ion-row>
+                    <ion-col size="6">
+                        <p>What amount of points you want to give?</p>
+                    </ion-col>
+                    <ion-col size="2" offset="1">
+                        <ion-input #rewardPoint style="font-size: 18px;" type="number"></ion-input>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+            <div style="margin-top:16px; margin-bottom:12px;">
+                <p style="margin-left:10px;">What did the customer ordered?</p>
+
+                <ion-button *ngIf="merchantOfferings[0]" [color]="firstOfferSelected ? 'kookie' :'light'" size="small" (click)="toggleOrder(merchantOfferings[0], 0)">{{ merchantOfferings[0] }}</ion-button>
+
+                <ion-button *ngIf="merchantOfferings[1]" [color]="secondOfferSelected ? 'kookie' :'light'" size="small" (click)="toggleOrder(merchantOfferings[1], 1)">{{ merchantOfferings[1] }}</ion-button>
+
+                <ion-button *ngIf="merchantOfferings[2]" [color]="thirdOfferSelected ? 'kookie' :'light'" size="small" (click)="toggleOrder(merchantOfferings[2], 2)">{{ merchantOfferings[2] }}</ion-button>
+
+                <ion-button *ngIf="merchantOfferings[3]" [color]="forthOfferSelected ? 'kookie' :'light'" size="small" (click)="toggleOrder(merchantOfferings[3], 3)">{{ merchantOfferings[3] }}</ion-button>
+
+                <ion-button *ngIf="merchantOfferings[4]" [color]="fifthOfferSelected ? 'kookie' :'light'" size="small" (click)="toggleOrder(merchantOfferings[4], 4)">{{ merchantOfferings[4] }}</ion-button>
+
+                <ion-button *ngIf="merchantOfferings[5]" [color]="fifthOfferSelected ? 'kookie' :'light'" size="small" (click)="toggleOrder(merchantOfferings[5], 5)">{{ merchantOfferings[5] }}</ion-button>
+            </div>
+
+            <div class="ion-text-center">
+                <button class="confirm-button" (click)="pointRewardToUser(rewardPoint.value)">Confirm</button>
+            </div>
+
+        </ion-card-content>
+    </ion-card>
+
+</ion-content>

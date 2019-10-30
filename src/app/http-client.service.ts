@@ -14,6 +14,7 @@ export class HttpClientService {
 
   // token = await this.afAuth.auth.currentUser.getIdToken(true);   // Will use after firbase authentication //
   token = 'ThisIsSomeDummyToken';
+
   header = new HttpHeaders({
       Authorization: 'Bearer ' + this.token
     });
@@ -23,24 +24,22 @@ export class HttpClientService {
     ) { }
 
   async getUserData(userCode: any) {
-    // tslint:disable-next-line: max-line-length
     this.userData = await this.http.get(this.backendServerUrl + 'getUserData/' + userCode, { headers: this.header }).toPromise();
     return this.userData;
   }
 
   async getMerchantData(merchantUid: any) {
-    // tslint:disable-next-line: max-line-length
     this.merchantData = await this.http.get(this.backendServerUrl + 'getMerchantData/' + merchantUid, { headers: this.header }).toPromise();
     return this.merchantData;
   }
 
-  async postRewardToUser(userUid: any, merchantUid: any, rewardAmount: number) {
-    // tslint:disable-next-line: max-line-length
+  async postRewardToUser(customerId: any, merchantUid: any, rewardAmount: number, orderedFood: any) {
     this.reward = await this.http.post(
       this.backendServerUrl + 'postRewardToUser',
-      { userUid: userUid,
+      { userCode: customerId,
         merchantUid: merchantUid,
         rewardAmount: rewardAmount,
+        foodType: orderedFood,
       },
       { headers: this.header }
       ).toPromise();

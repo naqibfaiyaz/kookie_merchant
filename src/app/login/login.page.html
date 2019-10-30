@@ -1,5 +1,5 @@
 <ion-header>
-    <ion-toolbar class="new-background-color">
+    <ion-toolbar>
         <ion-title>Kookie Merchant</ion-title>
     </ion-toolbar>
 </ion-header>
@@ -22,9 +22,11 @@
                     <ion-icon name="key"></ion-icon>
                     <ion-input type="password" [(ngModel)]="user.password" placeholder="Password" name="password"></ion-input>
                 </ion-item><br/>
-                <ion-button type="submit">Login</ion-button>
+                <ion-button color="kookie" type="submit">Login</ion-button>
             </form><br/>
-            <div>Don't have a account? <a href="/register" class="">Register</a> here</div>
+            <div>
+                <p>Don't have a account? <a href="/register" class="">Register</a> here</p>
+            </div>
         </ion-card-content>
     </ion-card>
 </ion-content>

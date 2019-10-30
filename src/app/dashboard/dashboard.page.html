@@ -1,56 +1,39 @@
 <ion-header>
     <ion-toolbar>
         <ion-title>Kookie Merchant</ion-title>
-        <ion-button slot="end" fill="clear" color="light" size="small" (click)="logout()"><ion-icon name="exit"></ion-icon>Sign Out</ion-button>
+        <ion-button slot="end" fill="clear" color="light" size="small" (click)="logout()">
+            <ion-icon class="ion-no-margin ion-no-padding" name="exit"></ion-icon>Sign Out</ion-button>
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
-    <ion-card>
-        <ion-card-header>
-            <ion-card-title>Welcome <b>{{ merchantEmail }}</b></ion-card-title>
-        </ion-card-header>
 
-        <ion-card-content class="ion-text-center">            
-            <ion-grid>
-                <ion-row>
-                    <ion-col size="8" offset="2">
-                        Ready to scan a customer's QR code? Tap the button to start!
-                    </ion-col>                       
-                </ion-row>
+    <div class="tap-to-scan">
+        <ion-grid>
+            <ion-row class="ion-text-center">
+                <ion-col size="10" offset="1">
+                    <p>Ready to scan a customer's QR code? Tap the button to start!</p>
+                    <button class="scan-button" routerLink="/qr-code-scan">Scan QR Code</button>
+                    <p>Or enter customer's user ID below:</p>
+                </ion-col>
+            </ion-row>
 
-                <ion-row>
-                    <ion-col size="12">
-                        <button class="scan-button">Scan QR Code</button>
-                    </ion-col>
-                </ion-row>
+            <ion-row>
+                <ion-col class="ion-text-center" size="6" offset="2" style="padding-top: 0;">
+                    <ion-input #userCodeInput type="number" placeholder="Enter Code here"></ion-input>
+                </ion-col>
+                <ion-col style="padding-top: 0;">
+                    <ion-button item-left color="kookie" (click)="getUserByCode(userCodeInput.value)">Go</ion-button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </div>
 
-                <ion-row>
-                    <ion-col size="12">
-                        Or enter customer's user ID below: 
-                    </ion-col>
-                </ion-row>
+    <div class="heading">
+        <h1>Reward Claims</h1>
+    </div>
+    <div class="reward-claim">
+        <p>No customer is claiming reward right now</p>
+    </div>
 
-                <ion-row>
-                    <ion-col size="6" offset="1">
-                        <ion-input class="user-code"  #userCodeInput type="number" placeholder="Enter Code here"></ion-input>
-                    </ion-col>
-                    <ion-col>
-                        <button class="go-button" (click)="getUserByCode(userCodeInput.value)">Go</button>
-                    </ion-col>
-                </ion-row>
-            </ion-grid>
-            <!-- <ion-button class="scan-button" color="secondary" (click)="QRCodeScan()">Scan QR Code</ion-button> -->            
-        </ion-card-content>
-    </ion-card>
-
-    <ion-card>
-        <ion-card-header>
-            <ion-card-title>Reward Claims</ion-card-title>
-        </ion-card-header>
-        <ion-card-content class="ion-text-center">
-            No claim right now!
-        </ion-card-content>
-    </ion-card>
-    
 </ion-content>

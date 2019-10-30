@@ -1,35 +1,53 @@
+.tap-to-scan {
+    background-color: #f4f5f8;
+}
+
+p {
+    font-size: 14px;
+    margin-bottom: 0;
+}
+
+.heading {
+    padding-left: 14px;
+}
+
+.reward-claim {
+    background-color: #f4f5f8;
+    padding-top: 16px;
+    padding-bottom: 18px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 20px;
+    font-weight: bold;
+}
 
 .scan-button {
-    background-color: #ED7014;
-    border: none;
-    color: white;    
+    background-color: #FF7F50;
+    color: white;
     text-align: center;
-    text-decoration: none;
-    display: inline-block;
     border-radius: 20px;
     padding-left: 20px;
     padding-right: 20px;
     padding-top: 10px;
     padding-bottom: 10px;
     font-size: 14px;
+    outline: none !important;
 }
 
-.go-button {
-    background-color: #ED7014;
-    border: none;
-    color: white;    
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    border-radius: 5px;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top: 13px;
-    padding-bottom: 13px;
-    font-size: 14px;
+.scan-button:active {
+    box-shadow: 0 0 4px #999;
 }
 
-ion-input{
-    border: solid 1px darkgrey ;   
+ion-input {
+    height: 38px;
+    border: solid 1px darkgrey;
     border-radius: 5px;
+    font-size: 15px;
+    font-style: normal;
+}
+
+ion-button {
+    margin: 0;
 }

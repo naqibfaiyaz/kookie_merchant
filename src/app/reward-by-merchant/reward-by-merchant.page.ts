@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { HttpClientService } from '../http-client.service';
-import { NavController, ToastController } from '@ionic/angular';
+import { ToastController, LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-reward-by-merchant',
@@ -11,81 +11,128 @@ import { NavController, ToastController } from '@ionic/angular';
 })
 export class RewardByMerchantPage implements OnInit {
 
-  userUid = this.route.snapshot.queryParamMap.get('uid');
   customerId = this.route.snapshot.queryParamMap.get('customerId');
   createdAt = this.route.snapshot.queryParamMap.get('createdAt');
-
   merchantUid = this.afAuth.auth.currentUser.uid;
+
+  // userUid = this.route.snapshot.queryParamMap.get('uid');    // Do not need right now //
   // merchantUid = 'clw8Q9TWtJeRBVz4WigFFBhpxwM2';
+  // merchantUid = 'pRKkWxE9wvPSh1esl3mRi5eY5O52';
+  // customerId = '24254588';
+  // createdAt = 'Jun 2019';
 
   elementType: 'url' | 'canvas' | 'img' = 'url';
-  value: string = this.userUid;   // For Showing QR Code for specific uid
+  value: string = this.customerId;   // For Showing QR Code for specific uid
 
   merchantData = null;
   pointType = null;
   merchantCode = null;
   merchantOfferings = null;
-  userData = null;
-  userCode = null;
   rewardResponse = null;
+  rewardValue = null;
+  foodOrder = null;
+  orderedFood = null;
+  showContent = false;
+  star = false;
+  points = false;
+  firstOfferSelected = false;
+  secondOfferSelected = false;
+  thirdOfferSelected = false;
+  forthOfferSelected = false;
+  fifthOfferSelected = false;
+  sixthOfferSelected = false;
   selectedOneStar = false;
   selectedTwoStar = false;
   selectedThreeStar = false;
   selectedFourStar = false;
   selectedFiveStar = false;
-  drinkSelected = false;
-  foodSelected = false;
-  coffeeSelected = false;
-  orderName = null;
-  rewardValue = null;
-  star = false;
-  points = false;
-  userDd = null;
-  order1 = null;
-  order2 = null;
-  userDatt = null;
+  selectedOrders = [];
 
   constructor(
     private route: ActivatedRoute,
-    public afAuth: AngularFireAuth, 
+    public afAuth: AngularFireAuth,
     public httpClientService: HttpClientService,
     private router: Router,
-    private navCtrl: NavController,
     public toastController: ToastController,
+    public loadingCtrl: LoadingController,
   ) { }
 
   async getMerchantByEmail() {
+
+    let loading = await this.loadingCtrl.create({
+      message: 'Please Wait',
+      cssClass: 'custom-loading',
+      spinner: 'circles',
+      keyboardClose: true,
+    });
+    await loading.present();
     this.merchantData = await this.httpClientService.getMerchantData(this.merchantUid);
     this.pointType = this.merchantData.pointType;
     this.merchantCode = this.merchantData.merchantCode;
     this.merchantOfferings = Object.values(this.merchantData.offers);
+    // this.merchantOfferings = ['food', 'drink', 'coffee'];
     if (this.pointType === 'points') {
       this.points = true;
     } else if (this.pointType === 'star') {
       this.star = true;
     }
+    this.showContent = true;
+    loading.dismiss();
+  }
+
+  orderFood() {
+    if (this.firstOfferSelected === true) {
+      this.selectedOrders.push(this.merchantOfferings[0]);
+    }
+    if (this.secondOfferSelected === true) {
+      this.selectedOrders.push(this.merchantOfferings[1]);
+    }
+    if (this.thirdOfferSelected === true) {
+      this.selectedOrders.push(this.merchantOfferings[2]);
+    }
+    if (this.forthOfferSelected === true) {
+      this.selectedOrders.push(this.merchantOfferings[3]);
+    }
+    if (this.fifthOfferSelected === true) {
+      this.selectedOrders.push(this.merchantOfferings[4]);
+    }
+    if (this.sixthOfferSelected === true) {
+      this.selectedOrders.push(this.merchantOfferings[5]);
+    }
+    this.foodOrder = this.selectedOrders.join(',');
+    this.selectedOrders = [];
+    return this.foodOrder;
   }
 
   async starRewardToUser() {
-
-    this.rewardResponse = await this.httpClientService.postRewardToUser(this.userUid, this.merchantUid, this.rewardValue);
-    this.showErrorAndNavigate(this.rewardResponse);
-
+    this.orderedFood = this.orderFood();
+    if (this.orderedFood === '' || this.rewardValue === null) {
+      this.messageToast('Please input reward amount and order.');
+    } else {
+      this.rewardResponse = await this.httpClientService.postRewardToUser(
+        this.customerId, this.merchantUid, this.rewardValue, this.orderedFood
+        );
+      this.showMessageAndNavigate(this.rewardResponse);
+    }
   }
 
-  async pointRewardToUser(rewardPointValue: number) {
-
-    this.rewardResponse = await this.httpClientService.postRewardToUser(this.userUid, this.merchantUid, rewardPointValue);
-    this.showErrorAndNavigate(this.rewardResponse);
-
+  async pointRewardToUser(rewardPointValue: any) {
+    this.orderedFood = this.orderFood();
+    if (this.orderedFood === '' || rewardPointValue === '') {
+      this.messageToast('Please input reward amount and order.');
+    } else {
+    this.rewardResponse = await this.httpClientService.postRewardToUser(
+      this.customerId, this.merchantUid, rewardPointValue, this.orderedFood
+      );
+    this.showMessageAndNavigate(this.rewardResponse);
+    }
   }
 
-  async showErrorAndNavigate(rewardResponse: any) {
+  async showMessageAndNavigate(rewardResponse: any) {
     if (rewardResponse === 1) {
       this.router.navigate(['dashboard']);
-      this.messageToast('Reward Successful !');
+      this.messageToast('Reward Successful !!');
     } else {
-      console.log(this.rewardResponse);
       this.messageToast(this.rewardResponse);
     }
   }
@@ -98,36 +145,48 @@ export class RewardByMerchantPage implements OnInit {
     toast.present();
   }
 
-
-  toggleOrder(order: string) {
-    this.orderName = order;
-    if (this.orderName === 'drink') {
-      if (this.drinkSelected === false) {
-        this.drinkSelected = true;
-        this.foodSelected = false;
-        this.coffeeSelected = false;
-      } else if (this.drinkSelected === true) {
-        this.drinkSelected = false;
-        this.orderName = null;
+  toggleOrder(order: string, orderNumber: number) {
+    if (orderNumber === 0) {
+      if (this.firstOfferSelected === false) {
+        this.firstOfferSelected = true;
+      } else if (this.firstOfferSelected === true) {
+        this.firstOfferSelected = false;
       }
-    } else if (this.orderName === 'food') {
-      if (this.foodSelected === false) {
-        this.drinkSelected = false;
-        this.foodSelected = true;
-        this.coffeeSelected = false;
-      } else if (this.foodSelected === true) {
-        this.foodSelected = false;
-        this.orderName = null;
-      } 
-    } else if (this.orderName === 'coffee') {
-      if (this.coffeeSelected === false) {
-        this.drinkSelected = false;
-        this.foodSelected = false;
-        this.coffeeSelected = true;
-      } else if (this.coffeeSelected === true) {
-        this.coffeeSelected = false;
-        this.orderName = null;
-      } 
+    }
+    if (orderNumber === 1) {
+      if (this.secondOfferSelected === false) {
+        this.secondOfferSelected = true;
+      } else if (this.secondOfferSelected === true) {
+        this.secondOfferSelected = false;
+      }
+    }
+    if (orderNumber === 2) {
+      if (this.thirdOfferSelected === false) {
+        this.thirdOfferSelected = true;
+      } else if (this.thirdOfferSelected === true) {
+        this.thirdOfferSelected = false;
+      }
+    }
+    if (orderNumber === 3) {
+      if (this.forthOfferSelected === false) {
+        this.forthOfferSelected = true;
+      } else if (this.forthOfferSelected === true) {
+        this.forthOfferSelected = false;
+      }
+    }
+    if (orderNumber === 4) {
+      if (this.fifthOfferSelected === false) {
+        this.fifthOfferSelected = true;
+      } else if (this.fifthOfferSelected === true) {
+        this.fifthOfferSelected = false;
+      }
+    }
+    if (orderNumber === 5) {
+      if (this.sixthOfferSelected === false) {
+        this.sixthOfferSelected = true;
+      } else if (this.sixthOfferSelected === true) {
+        this.sixthOfferSelected = false;
+      }
     }
   }
   toggleOneStar() {
@@ -162,7 +221,7 @@ export class RewardByMerchantPage implements OnInit {
       this.selectedFourStar = false;
       this.selectedFiveStar = false;
       this.rewardValue = null;
-    }    
+    }
   }
   toggleThreeStar() {
     if (this.selectedThreeStar === false) {
@@ -179,7 +238,7 @@ export class RewardByMerchantPage implements OnInit {
       this.selectedFourStar = false;
       this.selectedFiveStar = false;
       this.rewardValue = null;
-    }    
+    }
   }
   toggleFourStar() {
     if (this.selectedFourStar === false) {
@@ -196,7 +255,7 @@ export class RewardByMerchantPage implements OnInit {
       this.selectedFourStar = false;
       this.selectedFiveStar = false;
       this.rewardValue = null;
-    }    
+    }
   }
   toggleFiveStar() {
     if (this.selectedFiveStar === false) {
@@ -221,7 +280,9 @@ export class RewardByMerchantPage implements OnInit {
   }
 
   async ionViewWillEnter() {
+
     await this.getMerchantByEmail();
+
   }
 
 }

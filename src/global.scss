@@ -29,3 +29,6 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 @import '~firebaseui/dist/firebaseui.css';
+.custom-loading {
+    --spinner-color: #FF7F50;
+}

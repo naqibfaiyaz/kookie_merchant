@@ -1,59 +1,66 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
 import { NavController, ToastController } from '@ionic/angular';
 import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner/ngx';
 import { Router } from '@angular/router';
+import { AngularFireAuth } from '@angular/fire/auth';
 import { HttpClientService } from '../http-client.service';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.page.html',
-  styleUrls: ['./dashboard.page.scss'],
+  selector: 'app-qr-code-scan',
+  templateUrl: './qr-code-scan.page.html',
+  styleUrls: ['./qr-code-scan.page.scss'],
 })
-export class DashboardPage implements OnInit {
+export class QrCodeScanPage implements OnInit {
 
-  // merchantEmail = this.afAuth.auth.currentUser.email;
   userData = null;
-  uid = null;
   createdAt = null;
-  pointType = null;
-  merchantCode = null;
-  merchantData = null;
 
   constructor(
+    private qrScanner: QRScanner,
     public afAuth: AngularFireAuth,
+    public httpClientService: HttpClientService,
+    private router: Router,
     private navCtrl: NavController,
     public toastController: ToastController,
-    private qrScanner: QRScanner,
-    private router: Router,
-    public httpClientService: HttpClientService,
-    ) { }
+  ) { }
 
-  async getUserByCode(userCodeInput: number) {
+  async QRCodeScan() {
+
+    await this.qrScanner.prepare()
+    .then((status: QRScannerStatus) => {
+      if (status.authorized) {
+        this.qrScanner.show();
+        document.getElementById('scan-area').style.opacity = '0';
+        document.getElementById('show-view').style.opacity = '1';
+        this.qrScanner.scan().subscribe((userCode: string) => {
+          this.getUserByCode(userCode);
+        });
+      }
+    })
+    .catch((e: any) => console.log('Error: ', e));
+  }
+
+  async getUserByCode(userCodeInput: string) {
     try {
       if (userCodeInput) {
         this.userData = await this.httpClientService.getUserData(userCodeInput);
-        // this.uid = this.userData.uid;      // Do not need right now //
         this.createdAt = this.userData.createdAt;
         if (this.userData === 0) {
-          this.messageToast('Customer not found. Please input correct Customer Id.');
+          this.router.navigate(['dashboard']);
+          this.messageToast('Customer not found. Please scan correct QR code.');
         } else  {
           this.router.navigate(['reward-by-merchant'] , {
             queryParams: { customerId: userCodeInput, createdAt: this.createdAt, }
           });
         }
       } else {
-        this.messageToast('Please input Customer Id');
+        this.router.navigate(['dashboard']);
+        this.messageToast('Customer not found. Please scan correct QR code.');
       }
     } catch (e) {
+      this.router.navigate(['dashboard']);
       this.messageToast(e.statusText + '. Please try again.');
     }
-  }
-
-  async logout() {
-    await this.afAuth.auth.signOut();
-    await this.navCtrl.navigateForward('/login');
-    await this.messageToast('Your have successfully logged out.');
   }
 
   async messageToast(messageBody: string) {
@@ -64,9 +71,8 @@ export class DashboardPage implements OnInit {
     toast.present();
   }
 
-
   ngOnInit() {
-
+    this.QRCodeScan();
   }
 
 }

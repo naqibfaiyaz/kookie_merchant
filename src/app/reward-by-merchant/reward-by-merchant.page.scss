@@ -6,32 +6,62 @@ ion-icon {
     margin-left: 12px;
 }
 
-ion-input{
-    border: solid 1px darkgrey ;   
+ion-input {
+    color: #000;
+    border: solid 1px darkgrey;
     border-radius: 5px;
     width: 80px;
     text-align: center;
     float: inherit;
 }
 
-.qr-code {
-    // border: 2px solid red;
-    color: coral;
+ion-content {
+    background-color: #f4f5f8;
+}
+
+ion-card {
+    border-radius: 10px;
+}
+
+ion-card {
+    background-color: #FFF;
+}
+
+.customer-id {
+    font-size: 18px;
+    font-weight: bold;
+    color: #000;
+}
+
+.enroll-date {
+    font-size: 12px;
+    color: #000;
+}
+
+.test-class>img {
+    width: 200px;
 }
 
 .confirm-button {
-    background-color: #ED7014;
-    border: none;
-    color: white;    
+    background-color: #FF7F50;
+    color: white;
     text-align: center;
-    text-decoration: none;
-    display: inline-block;
     border-radius: 20px;
     padding-left: 26px;
     padding-right: 26px;
     padding-top: 10px;
     padding-bottom: 10px;
-    font-size: 14px;
+    font-size: 16px;
     margin-top: 16px;
     margin-left: 10px;
+    outline: none !important;
+}
+
+.confirm-button:active {
+    box-shadow: 0 0 8px #999;
+}
+
+p {
+    color: #000;
+    font-weight: bold;
 }
